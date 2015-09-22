@@ -163,8 +163,10 @@ function makeReload(moduleName, listeners){
 		// reload("foo", callback); -> after "foo" is imported.
 		// reload("*", callback); -> after each module imports.
 		if(arguments.length === 2) {
-			reload.on(moduleName, callback);
-			setupUnbind(moduleName, callback);
+			// Normalize the name so we can pass relative module names.
+			var n = loader.normalizeSync(moduleName);
+			reload.on(n, callback);
+			setupUnbind(n, callback);
 			return;
 		}
 		reload.on("!cycleComplete", moduleName);
@@ -248,7 +250,10 @@ function setup(){
 	};
 
 	ws.onmessage = function(ev){
-		var moduleName = ev.data;
+		// Normalize so the server/build process can send relative
+		// module names. A normalized module name in SystemJS is a
+		// full URL.
+		var moduleName = loader.normalizeSync(ev.data);
 		reload(moduleName);
 	};
 }
