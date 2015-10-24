@@ -1,5 +1,5 @@
 var loader = require("@loader");
-var steal = require("@steal");
+//var steal = require("@steal");
 
 // This is a map of listeners, those who have registered reload callbacks.
 loader._liveListeners = {};
@@ -138,7 +138,7 @@ function makeReload(moduleName, listeners){
 		// reload("*", callback); -> after each module imports.
 		if(arguments.length === 2) {
 			// Normalize the name so we can pass relative module names.
-			var n = loader.normalizeSync(moduleName);
+			var n = moduleName == "*" ? moduleName : loader.normalizeSync(moduleName);
 			reload.on(n, callback);
 			setupUnbind(n, callback);
 			return;
