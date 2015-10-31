@@ -179,7 +179,7 @@ function bind(fn, ctx){
 
 function reload(moduleName) {
 	var e = loader._liveEmitter;
-	var currentDeps = loader.getDependencies(moduleName);
+	var currentDeps = loader.getDependencies(moduleName) || [];
 
 	// Call teardown to recursively delete all parents, then call `import` on the
 	// top-level parents.
